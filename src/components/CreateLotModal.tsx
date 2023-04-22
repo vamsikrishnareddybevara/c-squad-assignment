@@ -10,7 +10,7 @@ import Cardano from "./../assets/crypto-icons/Cardano.svg";
 import ChainLink from "./../assets/crypto-icons/ChainLink.svg";
 import Ethereum from "./../assets/crypto-icons/Ethereum.svg";
 import Tabs, { Tab } from "./Tabs";
-// import { CheckIcon } from '@heroicons/react/24/outline'
+import classNames from "classnames";
 
 const CREATE_LOT_STEPS = [
     { id: "1", isCompleted: false, title: "Choose your asset", stepNo: 1 },
@@ -34,6 +34,42 @@ const ASSETS: Asset[] = [
     { id: "cardano", name: "Cardano", icon: Cardano },
     { id: "chainLink", name: "ChainLink", icon: ChainLink },
 ];
+
+const AssetDetails = ({
+    asset,
+    handleAssetSelection,
+    id,
+    selectedAssets,
+    currentStep,
+}: {
+    asset: Asset;
+    handleAssetSelection: (asset: Asset, assetKey: string) => void;
+    id: string;
+    selectedAssets: any;
+    currentStep: Step;
+}) => {
+    const selected =
+        (selectedAssets?.primaryAsset === id && currentStep.stepNo === 1) ||
+        (selectedAssets?.secondaryAsset === id && currentStep.stepNo === 2);
+    return (
+        <div
+            key={asset.id}
+            className={classNames(
+                "flex flex-col justify-between items-center p-3 cursor-pointer",
+                {
+                    "border border-gray-100": selected,
+                }
+            )}
+            onClick={() => {
+                handleAssetSelection(asset, id);
+            }}
+        >
+            <img src={asset.icon} alt={asset.name} className="h-10 w-10" />
+
+            <div className="text-white mt-4 text-opacity-70">{asset.name}</div>
+        </div>
+    );
+};
 const CreateLotModal = ({
     open,
     toggleModal,
@@ -50,8 +86,8 @@ const CreateLotModal = ({
     const handleCurrentTab = (tab: Tab) => {
         setCurrentTab(tab);
     };
-
-    const handleAssetSelection = (asset: Asset) => {
+    const [selectedAssets, setSelectedAssets] = useState<any>([]);
+    const handleAssetSelection = (asset: Asset, assetKey: string) => {
         const updatedStep = { ...currentStep, isCompleted: true };
         const updatedSteps = steps.map((step) => {
             if (step.id === currentStep.id) {
@@ -64,9 +100,17 @@ const CreateLotModal = ({
 
         if (currentStep.stepNo === 1) {
             setPrimaryAsset(asset);
+            setSelectedAssets((value: any[]) => ({
+                ...value,
+                primaryAsset: assetKey,
+            }));
         }
         if (currentStep.stepNo === 2) {
             setSecondaryAsset(asset);
+            setSelectedAssets((value: any[]) => ({
+                ...value,
+                secondaryAsset: assetKey,
+            }));
         }
     };
 
@@ -166,34 +210,35 @@ const CreateLotModal = ({
                                         <div className="flex flex-col px-4">
                                             {Array(5)
                                                 .fill("_")
-                                                .map((_a) => (
+                                                .map((_a, i) => (
                                                     <div className="flex justify-between">
                                                         {" "}
-                                                        {ASSETS.map((asset) => (
-                                                            <div
-                                                                key={asset.id}
-                                                                className="flex flex-col justify-between items-center py-3 cursor-pointer focus:border focus:border-gray-100"
-                                                                onClick={() =>
-                                                                    handleAssetSelection(
+                                                        {ASSETS.map(
+                                                            (asset, index) => (
+                                                                <AssetDetails
+                                                                    key={
+                                                                        asset.id
+                                                                    }
+                                                                    asset={
                                                                         asset
-                                                                    )
-                                                                }
-                                                            >
-                                                                <img
-                                                                    src={
-                                                                        asset.icon
                                                                     }
-                                                                    alt={
-                                                                        asset.name
+                                                                    handleAssetSelection={
+                                                                        handleAssetSelection
                                                                     }
-                                                                    className="h-10 w-10"
+                                                                    selectedAssets={
+                                                                        selectedAssets
+                                                                    }
+                                                                    id={
+                                                                        asset.id +
+                                                                        i +
+                                                                        index
+                                                                    }
+                                                                    currentStep={
+                                                                        currentStep
+                                                                    }
                                                                 />
-
-                                                                <div className="text-white mt-4 text-opacity-70">
-                                                                    {asset.name}
-                                                                </div>
-                                                            </div>
-                                                        ))}{" "}
+                                                            )
+                                                        )}{" "}
                                                     </div>
                                                 ))}
                                         </div>
