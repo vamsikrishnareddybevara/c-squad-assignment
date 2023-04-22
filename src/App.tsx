@@ -13,7 +13,7 @@ function App() {
     return (
         <div className="App">
             <CreateLotCard toggleModal={toggleModal} />
-            <CreateLotModal open={open} toggleModal={toggleModal} />
+            {open && <CreateLotModal open={open} toggleModal={toggleModal} />}
         </div>
     );
 }

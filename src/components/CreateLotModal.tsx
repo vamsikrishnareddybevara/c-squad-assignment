@@ -168,7 +168,7 @@ const CreateLotModal = ({
 
                 <div className="fixed inset-0 z-10 overflow-y-auto">
                     <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#1a1e33] px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 w-1/3 sm:p-6">
+                        <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#1a1e33] px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 w-1/3 min-w-[600px] sm:p-6">
                             <div className="text-base text-white font-medium text-opacity-90 ml-1 mb-2 py-4">
                                 Multi-user Lot
                             </div>
@@ -290,11 +290,12 @@ const CreateLotModal = ({
                                             onSubmit={(values) =>
                                                 console.log({ values })
                                             }
+                                            className="space-y-6"
                                         >
                                             <div>
                                                 <label
                                                     htmlFor="fund"
-                                                    className="block text-sm font-medium leading-6 text-white text-opacity-70"
+                                                    className="block text-sm font-medium leading-6 text-white text-opacity-70 pb-2"
                                                 >
                                                     Fund your pool
                                                     {"  "}({primaryAsset?.name})
@@ -312,7 +313,7 @@ const CreateLotModal = ({
                                             <div>
                                                 <label
                                                     htmlFor="lot-start-date"
-                                                    className="block text-sm font-medium leading-6 text-white text-opacity-70"
+                                                    className="block text-sm font-medium leading-6 text-white text-opacity-70 pb-2"
                                                 >
                                                     Lot Starts On
                                                 </label>
@@ -328,7 +329,7 @@ const CreateLotModal = ({
                                             <div>
                                                 <label
                                                     htmlFor="lot-end-date"
-                                                    className="block text-sm font-medium leading-6 text-white text-opacity-70"
+                                                    className="block text-sm font-medium leading-6 text-white text-opacity-70 pb-2"
                                                 >
                                                     Lot Ends On
                                                 </label>
